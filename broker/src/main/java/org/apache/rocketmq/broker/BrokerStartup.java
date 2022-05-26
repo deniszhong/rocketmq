@@ -120,7 +120,7 @@ public class BrokerStartup {
                 int ratio = messageStoreConfig.getAccessMessageInMemoryMaxRatio() - 10;
                 messageStoreConfig.setAccessMessageInMemoryMaxRatio(ratio);
             }
-
+            //在program argument 添加 -c D:\source\rocketmq\distribution\conf\broker.conf
             if (commandLine.hasOption('c')) {
                 String file = commandLine.getOptionValue('c');
                 if (file != null) {
@@ -141,11 +141,12 @@ public class BrokerStartup {
             }
 
             MixAll.properties2Object(ServerUtil.commandLine2Properties(commandLine), brokerConfig);
-
-            if (null == brokerConfig.getRocketmqHome()) {
-                System.out.printf("Please set the %s variable in your environment to match the location of the RocketMQ installation", MixAll.ROCKETMQ_HOME_ENV);
-                System.exit(-2);
-            }
+            // 为下面配置日志文件准备 conf/logback_broker.xml
+            brokerConfig.setRocketmqHome("D:\\source\\rocketmq\\distribution");
+//            if (null == brokerConfig.getRocketmqHome()) {
+//                System.out.printf("Please set the %s variable in your environment to match the location of the RocketMQ installation", MixAll.ROCKETMQ_HOME_ENV);
+//                System.exit(-2);
+//            }
 
             String namesrvAddr = brokerConfig.getNamesrvAddr();
             if (null != namesrvAddr) {
